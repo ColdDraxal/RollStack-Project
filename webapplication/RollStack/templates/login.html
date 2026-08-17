@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | RollStack</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --red: #ff3b30;
+            --red-dark: #d92d25;
+            --bg: #07090d;
+            --card: rgba(16, 19, 27, 0.92);
+            --border: #292d37;
+            --text: #f5f5f5;
+            --muted: #858b98;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(255, 59, 48, 0.14), transparent 30%),
+                radial-gradient(circle at 85% 80%, rgba(255, 59, 48, 0.08), transparent 30%),
+                var(--bg);
+
+            color: var(--text);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+        }
+
+        /* BACKGROUND DECORATION */
+
+        .background-glow {
+            position: fixed;
+            width: 450px;
+            height: 450px;
+
+            border-radius: 50%;
+
+            background: rgba(255, 59, 48, 0.05);
+
+            filter: blur(100px);
+
+            top: -200px;
+            right: -150px;
+
+            pointer-events: none;
+        }
+
+        /* CONTAINER */
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 1050px;
+
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            background: var(--card);
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.55);
+
+            backdrop-filter: blur(20px);
+        }
+
+        /* LEFT SIDE */
+
+        .brand-section {
+            min-height: 620px;
+
+            padding: 60px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255, 59, 48, 0.16),
+                    rgba(8, 10, 15, 0.95)
+                );
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: 900;
+            color: var(--red);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .brand-content {
+            max-width: 400px;
+        }
+
+        .brand-content .eyebrow {
+            color: var(--red);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+
+            margin-bottom: 18px;
+        }
+
+        .brand-content h1 {
+            font-size: 48px;
+            line-height: 1.08;
+
+            margin-bottom: 20px;
+        }
+
+        .brand-content h1 span {
+            color: var(--red);
+        }
+
+        .brand-content p {
+            color: var(--muted);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .features {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .feature {
+            padding: 8px 12px;
+
+            border: 1px solid #30343f;
+            border-radius: 20px;
+
+            color: #aeb3bd;
+
+            font-size: 12px;
+        }
+
+        /* RIGHT SIDE */
+
+        .form-section {
+            padding: 60px 55px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 32px;
+        }
+
+        .form-header h2 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        /* ERROR */
+
+        .error {
+            background: rgba(255, 59, 48, 0.08);
+            border: 1px solid rgba(255, 59, 48, 0.35);
+
+            color: #ff827b;
+
+            padding: 12px 14px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+
+            margin-bottom: 20px;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            color: #d5d7dd;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+
+            padding: 14px 45px 14px 15px;
+
+            background: #090b10;
+
+            border: 1px solid var(--border);
+            border-radius: 9px;
+
+            color: white;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: 0.25s;
+        }
+
+        .input-wrapper input::placeholder {
+            color: #565b66;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--red);
+
+            box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.08);
+        }
+
+        .password-toggle {
+            position: absolute;
+
+            right: 14px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            background: none;
+            border: none;
+
+            color: #707580;
+
+            cursor: pointer;
+
+            font-size: 13px;
+        }
+
+        .password-toggle:hover {
+            color: white;
+        }
+
+        /* BUTTON */
+
+        .submit-btn {
+            width: 100%;
+
+            padding: 14px;
+
+            margin-top: 8px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: var(--red);
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+        }
+
+        .submit-btn:hover {
+            background: var(--red-dark);
+
+            transform: translateY(-1px);
+
+            box-shadow: 0 8px 25px rgba(255, 59, 48, 0.18);
+        }
+
+        /* REGISTER */
+
+        .switch-auth {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        .switch-auth a {
+            color: var(--red);
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+        .switch-auth a:hover {
+            text-decoration: underline;
+        }
+
+        /* FOOTER */
+
+        .security-note {
+            margin-top: 30px;
+
+            text-align: center;
+
+            color: #555b67;
+
+            font-size: 11px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .auth-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-section {
+                min-height: auto;
+                padding: 40px;
+                gap: 40px;
+            }
+
+            .brand-content h1 {
+                font-size: 38px;
+            }
+
+            .form-section {
+                padding: 40px;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .brand-section,
+            .form-section {
+                padding: 30px 25px;
+            }
+
+            .brand-content h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-glow"></div>
+
+    <main class="auth-wrapper">
+
+        <!-- BRAND SIDE -->
+
+        <section class="brand-section">
+
+            <a href="{% url 'home' %}" class="logo">
+                Roll<span>Stack</span>
+            </a>
+
+            <div class="brand-content">
+
+                <div class="eyebrow">
+                    MOVIES • GAMES • DISCOVERY
+                </div>
+
+                <h1>
+                    Welcome<br>
+                    <span>back.</span>
+                </h1>
+
+                <p>
+                    Your personal entertainment library.
+                    Discover movies, explore games, build your
+                    collection, and keep everything you love in one place.
+                </p>
+
+            </div>
+
+            <div class="features">
+
+                <div class="feature">
+                    🎬 Movies
+                </div>
+
+                <div class="feature">
+                    🎮 Games
+                </div>
+
+                <div class="feature">
+                    ⭐ Ratings
+                </div>
+
+                <div class="feature">
+                    📚 Personal Library
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- LOGIN FORM -->
+
+        <section class="form-section">
+
+            <div class="form-header">
+
+                <h2>Sign in</h2>
+
+                <p>
+                    Continue exploring RollStack.
+                </p>
+
+            </div>
+
+
+            {% if error %}
+
+                <div class="error">
+                    {{ error }}
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()"
+                            id="toggleButton"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    Sign In
+                </button>
+
+            </form>
+
+
+            <div class="switch-auth">
+
+                Don't have an account?
+
+                <a href="{% url 'register' %}">
+                    Create one
+                </a>
+
+            </div>
+
+
+            <div class="security-note">
+                🔒 Your account is protected by Django authentication.
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+
+        function togglePassword() {
+
+            const password =
+                document.getElementById("password");
+
+            const button =
+                document.getElementById("toggleButton");
+
+
+            if (password.type === "password") {
+
+                password.type = "text";
+                button.textContent = "Hide";
+
+            } else {
+
+                password.type = "password";
+                button.textContent = "Show";
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>
