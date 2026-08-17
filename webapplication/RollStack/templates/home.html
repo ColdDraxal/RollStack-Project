@@ -1,7 +1,735 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block title %}RollStack - Home{% endblock %}
+    <title>RollStack | Movies & Games</title>
 
-{% block content %}
-Welcome to RollStack! This is the home page of your application. You can add more content here as needed.
-{% endblock %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #080a0f;
+            color: #ffffff;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            background: rgba(8, 10, 15, 0.95);
+            border-bottom: 1px solid #1b1e27;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ff3b30;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #b8bbc4;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links .active {
+            color: #ff3b30;
+        }
+
+        .login-btn {
+            text-decoration: none;
+            color: white;
+            border: 1px solid #30333c;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #ff3b30;
+            border-color: #ff3b30;
+        }
+
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            padding: 70px 7%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #080a0f 15%,
+                    rgba(8,10,15,0.92) 40%,
+                    rgba(8,10,15,0.25) 100%
+                ),
+                linear-gradient(
+                    135deg,
+                    #27100e,
+                    #080a0f
+                );
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero-small {
+            color: #ff3b30;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: 62px;
+            line-height: 1.05;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #ff3b30;
+        }
+
+        .hero p {
+            color: #a9adb7;
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            max-width: 560px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 14px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary-btn {
+            background: #ff3b30;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #e82d23;
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            border: 1px solid #454852;
+            color: white;
+        }
+
+        .secondary-btn:hover {
+            border-color: #ff3b30;
+            color: #ff3b30;
+        }
+
+
+        /* ================= SEARCH ================= */
+
+        .search-section {
+            padding: 0 7%;
+            margin-top: -30px;
+            position: relative;
+        }
+
+        .search-box {
+            background: #11141b;
+            border: 1px solid #242832;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: #080a0f;
+            border: 1px solid #292d37;
+            color: white;
+            padding: 14px 18px;
+            border-radius: 8px;
+            outline: none;
+            font-size: 15px;
+        }
+
+        .search-box input:focus {
+            border-color: #ff3b30;
+        }
+
+        .search-box button {
+            border: none;
+            background: #ff3b30;
+            color: white;
+            padding: 0 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+
+        /* ================= STATS ================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 60px 7% 30px;
+        }
+
+        .stat {
+            background: #11141b;
+            border: 1px solid #222631;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        .stat h2 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .stat p {
+            color: #858995;
+        }
+
+
+        /* ================= CONTENT ================= */
+
+        .section {
+            padding: 45px 7%;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 25px;
+        }
+
+        .view-all {
+            color: #ff3b30;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+
+        /* ================= CARDS ================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: #11141b;
+            border: 1px solid #222631;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            border-color: #ff3b30;
+        }
+
+        .card-image {
+            height: 260px;
+            background: linear-gradient(
+                135deg,
+                #252933,
+                #101217
+            );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #676b76;
+            font-size: 14px;
+        }
+
+        .card-info {
+            padding: 15px;
+        }
+
+        .card-info h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .card-info p {
+            color: #777b87;
+            font-size: 13px;
+        }
+
+        .rating {
+            color: #ffc107;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            border-top: 1px solid #1d2028;
+            margin-top: 50px;
+            padding: 35px 7%;
+            color: #666a75;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        footer strong {
+            color: #ff3b30;
+        }
+        .logout-btn {
+              text-decoration: none;
+            color: white;
+            border: 1px solid #30333c;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+   
+}
+
+.logout-btn:hover {
+     background: #ff3b30;
+            border-color: #ff3b30;
+   
+}
+
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .hero {
+                padding: 50px 6%;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-box button {
+                padding: 14px;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            Roll<span>Stack</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="/" class="active">Home</a></li>
+            <li><a href="#">Movies</a></li>
+            <li><a href="#">Games</a></li>
+            <li><a href="#">My List</a></li>
+            <li><a href="#">Genres</a></li>
+        </ul>
+
+        <a href="/login/" class="login-btn">
+            Login
+        </a>
+
+        <a href="{% url 'logout' %}" class="logout-btn">
+    Logout
+</a>
+
+    </nav>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-small">
+                WELCOME TO ROLLSTACK
+            </div>
+
+            <h1>
+                Your Ultimate
+                <span>Entertainment</span>
+                Library
+            </h1>
+
+            <p>
+                Discover movies and games worth your time.
+                Build your personal collection, explore new
+                releases, and keep track of everything you love.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#" class="btn primary-btn">
+                    Explore Movies
+                </a>
+
+                <a href="#" class="btn secondary-btn">
+                    Explore Games
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="search-section">
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                placeholder="Search movies, games, genres..."
+            >
+
+            <button>
+                Search
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STATS ================= -->
+
+    <section class="stats">
+
+        <div class="stat">
+            <h2>10K+</h2>
+            <p>Movies</p>
+        </div>
+
+        <div class="stat">
+            <h2>5K+</h2>
+            <p>Games</p>
+        </div>
+
+        <div class="stat">
+            <h2>50K+</h2>
+            <p>Users</p>
+        </div>
+
+        <div class="stat">
+            <h2>4.8 ★</h2>
+            <p>Average Rating</p>
+        </div>
+
+    </section>
+
+
+    <!-- ================= MOVIES ================= -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>🎬 Trending Movies</h2>
+
+            <a href="#" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="card-image">
+                    Movie Poster
+                </div>
+
+                <div class="card-info">
+                    <h3>Movie Title</h3>
+                    <p>2026 · Action</p>
+                    <div class="rating">★ 8.7</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Movie Poster
+                </div>
+
+                <div class="card-info">
+                    <h3>Movie Title</h3>
+                    <p>2026 · Thriller</p>
+                    <div class="rating">★ 8.5</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Movie Poster
+                </div>
+
+                <div class="card-info">
+                    <h3>Movie Title</h3>
+                    <p>2025 · Sci-Fi</p>
+                    <div class="rating">★ 9.0</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Movie Poster
+                </div>
+
+                <div class="card-info">
+                    <h3>Movie Title</h3>
+                    <p>2025 · Drama</p>
+                    <div class="rating">★ 8.3</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Movie Poster
+                </div>
+
+                <div class="card-info">
+                    <h3>Movie Title</h3>
+                    <p>2024 · Adventure</p>
+                    <div class="rating">★ 8.8</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= GAMES ================= -->
+
+    <section class="section">
+
+        <div class="section-header">
+
+            <h2>🎮 Popular Games</h2>
+
+            <a href="#" class="view-all">
+                View All →
+            </a>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+
+                <div class="card-image">
+                    Game Cover
+                </div>
+
+                <div class="card-info">
+                    <h3>Game Title</h3>
+                    <p>2026 · RPG</p>
+                    <div class="rating">★ 9.2</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Game Cover
+                </div>
+
+                <div class="card-info">
+                    <h3>Game Title</h3>
+                    <p>2025 · Action</p>
+                    <div class="rating">★ 8.9</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Game Cover
+                </div>
+
+                <div class="card-info">
+                    <h3>Game Title</h3>
+                    <p>2025 · Adventure</p>
+                    <div class="rating">★ 9.1</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Game Cover
+                </div>
+
+                <div class="card-info">
+                    <h3>Game Title</h3>
+                    <p>2024 · RPG</p>
+                    <div class="rating">★ 8.6</div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="card-image">
+                    Game Cover
+                </div>
+
+                <div class="card-info">
+                    <h3>Game Title</h3>
+                    <p>2024 · Strategy</p>
+                    <div class="rating">★ 8.8</div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <div>
+            © 2026 <strong>RollStack</strong>
+        </div>
+
+        <div>
+            Movies · Games · Entertainment
+        </div>
+
+    </footer>
+
+</body>
+</html>
